@@ -1440,7 +1440,7 @@ void body() {
 
 void handle() {
 	// main
-	cylinder(GL_FILL, 0.6, 0.6, 0.6, 0.025, 0.035, 0.25, 90, 1.0, 0, 0.0);
+	cylinderJ(GL_FILL, 0.6, 0.6, 0.6, 0.025, 0.035, 0.25, 90, 1.0, 0, 0.0);
 	// deco
 	// right
 	glPushMatrix();
@@ -1478,11 +1478,11 @@ void weapon() {
 	glPushMatrix();
 	if (isWeaponOut) {
 		glTranslatef(0, 0, 0);
-		cylinder(GL_FILL, 0.5, 0.5, 0.5, 0.06, 0.06, 0.01, 90, 1.0, 0, 0.0);
+		cylinderJ(GL_FILL, 0.5, 0.5, 0.5, 0.06, 0.06, 0.01, 90, 1.0, 0, 0.0);
 	}
 	else {
 		glTranslatef(0, 0, 0);
-		cylinder(GL_FILL, 0.5, 0.5, 0.5, 0, 0, 0.01, 90, 1.0, 0, 0.0);
+		cylinderJ(GL_FILL, 0.5, 0.5, 0.5, 0, 0, 0.01, 90, 1.0, 0, 0.0);
 	}
 	glPopMatrix();
 
@@ -1490,7 +1490,7 @@ void weapon() {
 	glPushMatrix();
 	if (isSwordOut) {
 		glTranslatef(0, -0.012, 0);
-		cylinder(GL_FILL, 0.2, 0.2, 0.8, 0.025, 0.025, 0.95, 90, 1.0, 0, 0.0);
+		cylinderJ(GL_FILL, 0.2, 0.2, 0.8, 0.025, 0.025, 0.95, 90, 1.0, 0, 0.0);
 	}
 	else {
 	}
@@ -1500,30 +1500,29 @@ void weapon() {
 	glPushMatrix();
 	if (isWeaponOut) {
 		glTranslatef(0.08, 0.125, 0);
-		drawCube(0.9, 0.9, 0.9, 1, 0.05, 0.01, 0.01);
+		drawCubeJ(0.9, 0.9, 0.9, 1, 0.05, 0.01, 0.01);
 	}
 	else {
 	}
 	glPopMatrix();
 }
 
-
 void arm() {
 	// arm top skeleton
 	glPushMatrix();
 	glRotatef(90, 1.0, -0.2, 0.0);
 	glTranslatef(0, 0, 0.22);
-	drawCube(0.7, 0.7, 0.7, 0.05, 0.5, 0.5, 4);
+	drawCubeJ(color[2][0], color[2][1], color[2][2], 0.05, 0.5, 0.5, 4);
 	glPopMatrix();
 	// arm top
 	glPushMatrix();
 	glRotatef(90, 1.0, -0.2, 0.0);
-	cylinder(GLU_FILL, 1, 1, 1, 0.055, 0.045, 0.35, 90, 1.0, -0.2, 0.0);
-	glPopMatrix();
+	cylinderJ(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.055, 0.045, 0.35, 90, 1.0, -0.2, 0.0);
+	glPopMatrix();	
 	// joints
 	glPushMatrix();
 	glTranslatef(-0.075, -0.385, 0.0);
-	sphere(GLU_FILL, 1, 1, 1, 0.045, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0);
+	sphere(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.045, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0);
 	glPopMatrix();
 	// deltoids
 
@@ -1532,7 +1531,7 @@ void arm() {
 	//texture = loadTexture("metal.bmp");
 	glPushMatrix();
 	glTranslatef(-0.01, -0.06, 0.0);
-	sphere(GLU_FILL, 1, 1, 1, 0.094, 0.7, 1.3, 0.7, 347, 0, 0, 1);
+	sphere(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.094, 0.7, 1.3, 0.7, 347, 0, 0, 1);
 	glPopMatrix();
 
 	//glDeleteTextures(1, &texture);
@@ -1540,7 +1539,7 @@ void arm() {
 	// biceps
 	glPushMatrix();
 	glTranslatef(-0.033, -0.185, 0.0);
-	sphere(GLU_FILL, 1, 1, 1, 0.089, 0.65, 2.1, 0.65, 349.5, 0, 0, 1);
+	sphere(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.089, 0.65, 2.1, 0.65, 349.5, 0, 0, 1);
 	glPopMatrix();
 }
 
@@ -1549,35 +1548,35 @@ void forearm() {
 	glPushMatrix();
 	glRotatef(90, 1.0, -0.22, 0.0);
 	glTranslatef(0.01, 0.0, 0.2);
-	drawCube(0.7, 0.7, 0.7, 0.05, 0.3, 0.3, 4);
+	drawCubeJ(color[1][0], color[1][1], color[1][2], 0.05, 0.3, 0.3, 4);
 	glPopMatrix();
 	// forearm
 	glPushMatrix();
 	glTranslatef(-0.009, -0.065, 0.0);
-	cylinder(GLU_FILL, 1, 1, 1, 0.0425, 0.024, 0.25, 90, 1.0, -0.23, 0.0);
+	cylinderJ(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.0425, 0.024, 0.25, 90, 1.0, -0.23, 0.0);
 	glPopMatrix();
 	// muscle
 	glPushMatrix();
 	glTranslatef(-0.015, -0.08, 0.0);
-	sphere(GLU_FILL, 1, 1, 1, 0.105, 0.42, 1, 0.42, 346, 0, 0, 1);
+	sphere(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.105, 0.42, 1, 0.42, 346, 0, 0, 1);
 	glPopMatrix();
 	// joints
 	glPushMatrix();
 	glTranslatef(-0.073, -0.352, 0.0);
-	sphere(GLU_FILL, 1, 1, 1, 0.025, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0);
+	sphere(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.025, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0);
 	glPopMatrix();
 }
 
 void palm() {
 	glPushMatrix();
-	drawCubeJ(1, 1, 1, 1, 0.07, 0.08, 0.02);
+	drawCubeJ(color[2][0], color[2][1], color[2][2], 1, 0.07, 0.08, 0.02);
 	glPopMatrix();
 }
 
 void finger(int rotate, float thicc, float length) {
 	glPushMatrix();
 	glRotatef(rotate, 1, -1, 0);
-	drawCubeJ(1, 1, 1, 1, thicc, length, 0.01);
+	drawCubeJ(color[1][0], color[1][1], color[1][2], 1, thicc, length, 0.01);
 	glPopMatrix();
 }
 
@@ -1732,6 +1731,7 @@ void botharms() {
 
 	glPopMatrix();
 }
+
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
