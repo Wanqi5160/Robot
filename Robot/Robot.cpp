@@ -87,7 +87,7 @@ float legAngle3 = 0;
 
 bool isChangeTexture = false;
 
-float move = 0;
+float move = 1, zposition = 0;
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -251,6 +251,21 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			}
 		}
 }
+		else if (wParam == '6') {
+		if (isOrtho) {
+			if (PTz > ONear) {
+				PTz -= TSpeed;
+			}
+		}
+		else {
+			if (PTz > PNear) {  //(Tz > PNear + radius1)
+				PTz -= TSpeed;
+			}
+		}
+}
+		else if (wParam == '7') {
+		zposition = 0;
+}
 		else if (wParam == 'A') {
 			PTx += PTSpeed;             //Move projection to right
 		}
@@ -276,16 +291,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				}
 			}
 
-			if (isOrtho) {
-				if (PTz > ONear) {
-					PTz -= TSpeed;
-				}
-			}
-			else {
-				if (PTz > PNear) {  //(Tz > PNear + radius1)
-					PTz -= TSpeed;
-				}
-			}
+			
 			}
 		else if (wParam == 'D') {
 			PTx -= PTSpeed;             //Move projection to left
@@ -339,7 +345,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				}
 			}
 			else if (isBodyMovement) {
-				move += 1;
+				zposition += move;
 				if (front) {
 					r -= bodySpeed;
 					wholeArmAngleL -= bodySpeed;
@@ -2030,7 +2036,7 @@ void display()
 		robottexture = loadTexture("icecream.bmp");
 	}
 	glPushMatrix();
-	glTranslatef(0, 0, move);
+	glTranslatef(0, 0, zposition);
 	robot();
 	glPopMatrix();
 	glDeleteTextures(1, &robottexture);
