@@ -67,7 +67,7 @@ float color[3][3] = {
 	{black[2][0], black[2][1], black[2][2]}
 };
 int countColor = 0;
-int textureCount = 0;
+int textureCount = 1;
 
 // arms
 float handSpeed = 1.0;
@@ -102,49 +102,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		if (wParam == VK_ESCAPE) PostQuitMessage(0);
 		else if (wParam == VK_CAPITAL) {
 			isChangeTexture = !isChangeTexture;
-			if (wParam == '1') {
-				textureCount = 1;
+			if (isChangeTexture) {
+				isHandMovement = false;
 			}
-			else if (wParam == '2') {
-				textureCount = 2;
-			}
-			else if (wParam == '0') {
-				textureCount = 0;
-			}
-			/*countColor++;
-
-			if (countColor >= 4) {
-				countColor = 0;
-			}
-
-			if (countColor == 0) {
-				for (int i = 0; i < 3; ++i) {
-					for (int j = 0; j < 3; ++j) {
-						color[i][j] = black1[i][j];
-					}
-				}
-			}
-			if (countColor == 1) {
-				for (int i = 0; i < 3; ++i) {
-					for (int j = 0; j < 3; ++j) {
-						color[i][j] = black[i][j];
-					}
-				}
-			}
-			else if (countColor == 2) {
-				for (int i = 0; i < 3; ++i) {
-					for (int j = 0; j < 3; ++j) {
-						color[i][j] = black2[i][j];
-					}
-				}
-			}
-			else if (countColor == 3) {
-				for (int i = 0; i < 3; ++i) {
-					for (int j = 0; j < 3; ++j) {
-						color[i][j] = black3[i][j];
-					}
-				}
-			}*/
 		}
 		else if (wParam == '9') {
 			countColor++;
@@ -181,13 +141,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 					}
 				}
 			}
-		}
-		else if (wParam == '0') {
-			defaultMode = true;
-			isHeadMovement = false;
-			isHandMovement = false;
-			isLegMovement = false;
-			isBodyMovement = false;
 		}
 		else if (wParam == VK_SPACE)
 		{
@@ -247,6 +200,40 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		{ // press right
 			angle += 90;
 			difpos[0] += 5; // Update x position of diffuse light
+		}
+		else if (wParam == '0') {
+			defaultMode = true;
+			isHeadMovement = false;
+			isHandMovement = false;
+			isLegMovement = false;
+			isBodyMovement = false;
+		}
+		else if (wParam == '1') {
+		if (isHandMovement) {
+			isWeaponOut = true; // weapon on
+		}
+		if (isChangeTexture) {
+			textureCount = 1;
+		}
+		}
+		else if (wParam == '2') {
+		if (isHandMovement) {
+			if (isWeaponOut) {
+				isSwordOut = true; // sword on
+			}
+		}
+		if (isChangeTexture) {
+			textureCount = 2;
+		}
+		}
+		else if (wParam == '3') {
+		if (isHandMovement) {
+			isWeaponOut = false;
+			isSwordOut = false;
+		}
+		if (isChangeTexture) {
+			textureCount = 3;
+		}
 		}
 		else if (wParam == 'A') {
 			PTx += PTSpeed;             //Move projection to right
@@ -480,24 +467,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				}
 			}
 		}
-		else if (wParam == '1') {
-		if (isHandMovement) {
-			isWeaponOut = true; // weapon on
-		}
-		}
-		else if (wParam == '2') {
-		if (isHandMovement) {
-			if (isWeaponOut) {
-				isSwordOut = true; // sword on
-			}
-		}
-		}
-		else if (wParam == '3') {
-		if (isHandMovement) {
-			isWeaponOut = false;
-			isSwordOut = false;
-		}
-		}
 		break;
 	default:
 		break;
@@ -706,6 +675,7 @@ void drawSphereS(double r, double R, double G, double B) {
 	GLUquadricObj* sphere = NULL; //quadric obj pointer
 	sphere = gluNewQuadric();     //create quadric obj
 	//gluQuadricDrawStyle(sphere, GLU_LINE);//set draw style
+	gluQuadricTexture(sphere, true);
 	gluSphere(sphere, r, 30, 30);//draw sphere
 	gluDeleteQuadric(sphere);       //delete quadric obj pointer/clear up memory
 }
@@ -715,6 +685,7 @@ void drawCylinderS(double br, double tr, double h, double R, double G, double B)
 	GLUquadricObj* cylinder = NULL; //quadric obj pointer
 	cylinder = gluNewQuadric();     //create quadric obj
 	gluQuadricDrawStyle(cylinder, GLU_LINE);//set draw style
+	gluQuadricTexture(cylinder, true);
 	gluCylinder(cylinder, br, tr, h, 30, 30);//draw sphere
 	gluDeleteQuadric(cylinder);       //delete quadric obj pointer/clear up memory
 
@@ -728,6 +699,7 @@ void drawConeS(double tr, double h) {
 	GLUquadricObj* cone = NULL; //quadric obj pointer
 	cone = gluNewQuadric();     //create quadric obj
 	//gluQuadricDrawStyle(cone, GLU_LINE);//set draw style
+	gluQuadricTexture(cone, true);
 	gluCylinder(cone, 0, tr, h, 30, 30);//draw sphere
 	gluDeleteQuadric(cone);       //delete quadric obj pointer/clear up memory
 
@@ -737,6 +709,7 @@ void drawDiskS(double inr, double outr) {
 	GLUquadricObj* disk = NULL; //quadric obj pointer
 	disk = gluNewQuadric();     //create quadric obj
 	gluQuadricDrawStyle(disk, GLU_FILL);//set draw style
+	gluQuadricTexture(disk, true);
 	gluDisk(disk, inr, outr, 30, 30);//draw sphere
 	gluDeleteQuadric(disk);       //delete quadric obj pointer/clear up memory
 }
@@ -772,6 +745,7 @@ void drawSphere(double radius) {
 	GLUquadricObj* sphere = NULL;						//quadric obj pointer
 	sphere = gluNewQuadric();								//create the quadric obbj
 	gluQuadricDrawStyle(sphere, GLU_FILL);
+	gluQuadricTexture(sphere, true);
 	gluSphere(sphere, radius, 30, 30);						//draw shpere
 	gluDeleteQuadric(sphere);								//delete quadric obj pointer / free up memory
 }
@@ -821,11 +795,13 @@ void drawCone(GLenum drawStyle, double topr, double height, int slices, int stac
 	cone = gluNewQuadric();
 	// gluQuadricDrawStyle(cone, GLU_LINE); /
 	gluQuadricDrawStyle(cone, drawStyle);
+	gluQuadricTexture(cone, true);
 	gluCylinder(cone, 0, topr, height, slices, stacks);	//if one radius make it 0.0, a cone is made
 	gluDeleteQuadric(cone);
 }
 void drawRectangle(float x, float y, float z, float width, float height, float depth) {
 	glBegin(GL_QUADS);
+	//glTexCoord2f();
 	glVertex3f(x, y, z);
 	glVertex3f(x + width, y, z);
 	glVertex3f(x + width, y + height, z + depth);
@@ -836,6 +812,7 @@ void drawCylinder(double baseR, double topR, double height) {
 	GLUquadricObj* cylinder = NULL;
 	cylinder = gluNewQuadric();
 	gluQuadricDrawStyle(cylinder, GLU_FILL);
+	gluQuadricTexture(cylinder, true);
 	gluCylinder(cylinder, baseR, topR, height, 30, 30);	//if one radius make it 0.0, a cone is made
 	gluDeleteQuadric(cylinder);
 }
@@ -1737,27 +1714,7 @@ void botharms() {
 	glPopMatrix();
 }
 
-void display()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-
-	//Projection
-	projection();                    
-
-	glMatrixMode(GL_MODELVIEW);       //refer to the model view matrix
-	glLoadIdentity();
-	//glTranslatef(Tx, 0.0, Tz);       //translate model along the z-axis
-
-	lighting();
-
-	//glRotatef(0.1, 1.0, 1.0, 1.0);
-	//glColor3f(0.0, 0.0, 1.0);       //Blue sphere
-	//glMaterialfv(GL_FRONT, GL_AMBIENT, ambM);     //red color ambient material
-	//glMaterialfv(GL_FRONT, GL_DIFFUSE, difM);     //red color ambient material
-
-	
-
+void robot() {
 	//Robot
 	glPushMatrix();
 	glScalef(0.5, 0.5, 0.5);
@@ -1838,7 +1795,42 @@ void display()
 	glPopMatrix();
 
 	glPopMatrix();  //---------Robot
+}
+
+void display()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+
+	//Projection
+	projection();                    
+
+	glMatrixMode(GL_MODELVIEW);       //refer to the model view matrix
+	glLoadIdentity();
+	//glTranslatef(Tx, 0.0, Tz);       //translate model along the z-axis
+
+	lighting();
+
+	//glRotatef(0.1, 1.0, 1.0, 1.0);
+	//glColor3f(0.0, 0.0, 1.0);       //Blue sphere
+	//glMaterialfv(GL_FRONT, GL_AMBIENT, ambM);     //red color ambient material
+	//glMaterialfv(GL_FRONT, GL_DIFFUSE, difM);     //red color ambient material
 	
+	GLuint texture;
+	glEnable(GL_TEXTURE_2D);
+	if (textureCount == 1) {
+		texture = loadTexture("");
+	}
+	else if (textureCount == 2) {
+		texture = loadTexture("metal.bmp");
+	}
+	else if (textureCount == 3) {
+		texture = loadTexture("sunset.bmp");
+	}
+	robot();
+	glDeleteTextures(1, &texture);
+	glDisable(GL_TEXTURE_2D);
+
 	//Plane
 	glColor3f(1.0, 1.0, 1.0);
 	glPushMatrix();
