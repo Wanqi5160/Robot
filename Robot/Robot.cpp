@@ -425,7 +425,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == 'L') {
 			if (isOrtho == false) {
 				if (PRy >= 26) {
-					PRSpeed = 26;
+					PRy = 26;
 				}
 				else {
 					PRy += PRSpeed;
@@ -471,17 +471,28 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 					//Tz = PNear + radius1;   //So the sphere will not otu of the perspective
 					}
 		else if (wParam == 'Q') {
+
+		if (isOrtho == false) {
+			if (PRx <= -20) {
+				PRx = -20;
+			}
+			else
+				PRx -= PRSpeed;
+		}
+		else {
 			if (PRx >= 45) {
 				PRx = 45;
 			}
 			else
-				PRx += PRSpeed;            //Rotate along x-axis anticlockwise for projection
+				PRx += PRSpeed;
+		}
+
 		}
 		else if (wParam == 'R') {
           //Rotate along y-axis clockwise for projection
 			if (isOrtho == false) {
 				if (PRy <= -26) {
-					PRSpeed = -26;
+					PRy = -26;
 				}
 				else
 					PRy -= PRSpeed;
@@ -502,10 +513,19 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			}
 		}
 		else if (wParam == 'U') {
+		if(isOrtho == false){
+			if (PRx >= 26) {
+				PRx = 26;
+			}
+			else
+				PRx += PRSpeed;
+		}
+		else{
 			if (PRx <= -90) {
 				PRx = -90;
 			}else	
 				PRx -= PRSpeed;            //Rotate along x-axis clockwise for projection
+		}
 		}
 		else if (wParam == 'V') {
 			if (isHandMovement)
