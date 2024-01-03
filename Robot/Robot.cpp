@@ -11,13 +11,13 @@
 
 // change mode
 bool isHeadMovement = false;
-bool isHandMovement = true;
+bool isHandMovement = false;
 bool isLegMovement = false;
 bool isBodyMovement = false;
-bool defaultMode = false;
+bool defaultMode = true;
 
 //Camera
-float Tx = 0, Tz = 0, TSpeed = 1.0;        //translate z-axis with TSpeed
+float Tx = 0, Tz = 0, TSpeed = 0.05;        //translate z-axis with TSpeed
 float PTx = 0, PTy = 0, PTz = -0.6, PTSpeed = 0.1;            //Translate for the projection
 bool isOrtho = true;
 float ONear = -100.0, OFar = 100.0;  //Ortho near and far
@@ -265,7 +265,34 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 }
 		else if (wParam == '7') {
 		zposition = 0;
-}
+		  isHeadMovement = false;
+		  isHandMovement = false;
+		  isLegMovement = false;
+		  isBodyMovement = false;
+		  defaultMode = true;
+		  Tx = 0, Tz = 0, TSpeed = 0.05;
+		  PTx = 0, PTy = 0, PTz = -0.6, PTSpeed = 0.1;
+		  isOrtho = true;
+		  ONear = -100.0, OFar = 100.0; 
+		  PNear = -50, PFar = 50;
+		  radius1 = 3.0;         
+		  PRy = 0.0, PRx = 0.0, PRSpeed = 1.0;handSpeed = 1.0;
+		    wholeArmAngleL = 0, forearmAngleL = 0;
+		    wholeArmAngleR = 0, forearmAngleR = 0;
+		    isWeaponOut = false, isSwordOut = false;
+		    headAngle = 0;
+			r = 0;
+		    bodySpeed = 2;
+		    front = true, back = false, frontB = true, backB = false;
+		    legAngle = 0;
+		    legAngle2 = 0;
+		    legAngle3 = 0;
+		    isChangeTexture = false;
+			textureCount = 1;
+		    move = 1, zposition = 0;
+			isLightOn = false;
+		  angle = 0;
+		}
 		else if (wParam == 'A') {
 			PTx += PTSpeed;             //Move projection to right
 		}
@@ -396,16 +423,17 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			isBodyMovement = false;
 			}
 		else if (wParam == 'L') {
-		if (isOrtho == false) {
-			if (PRy >= 26) {
-				PRSpeed = 26;
-			}else
-				PRy += PRSpeed;
-		}else
-			PRy += PRSpeed;
-				
-				if (isHeadMovement) { headAngle += 10; }//Rotate along y-axis anticlockwise for projection
+			if (isOrtho == false) {
+				if (PRy >= 26) {
+					PRSpeed = 26;
 				}
+				else {
+					PRy += PRSpeed;
+				}
+				}
+				else PRy += PRSpeed;
+				if (isHeadMovement) { headAngle += 10; }//Rotate along y-axis anticlockwise for projection
+		}
 		else if (wParam == 'M')
 		{
 			if (isLegMovement) {
@@ -443,8 +471,8 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 					//Tz = PNear + radius1;   //So the sphere will not otu of the perspective
 					}
 		else if (wParam == 'Q') {
-			if (PRx >= 0) {
-				PRx = 0;
+			if (PRx >= 45) {
+				PRx = 45;
 			}
 			else
 				PRx += PRSpeed;            //Rotate along x-axis anticlockwise for projection
