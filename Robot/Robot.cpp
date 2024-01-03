@@ -87,6 +87,8 @@ float legAngle3 = 0;
 
 bool isChangeTexture = false;
 
+float move = 0;
+
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -334,6 +336,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				}
 			}
 			else if (isBodyMovement) {
+				move += 1;
 				if (front) {
 					r -= bodySpeed;
 					wholeArmAngleL -= bodySpeed;
@@ -2024,7 +2027,7 @@ void display()
 		robottexture = loadTexture("icecream.bmp");
 	}
 	glPushMatrix();
-	glTranslatef(0, 0, 20);
+	glTranslatef(0, 0, move);
 	robot();
 	glPopMatrix();
 	glDeleteTextures(1, &robottexture);
