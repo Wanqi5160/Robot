@@ -142,8 +142,10 @@
     <ClCompile Include="Robot.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\..\Downloads\sky.bmp" />
+    <Image Include="icecream.bmp" />
     <Image Include="metal.bmp" />
+    <Image Include="sky.bmp" />
+    <Image Include="sunset.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

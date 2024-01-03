@@ -20,7 +20,7 @@ bool defaultMode = false;
 float Tx = 0, Tz = 0, TSpeed = 1.0;        //translate z-axis with TSpeed
 float PTx = 0, PTy = 0, PTz = 0, PTSpeed = 0.1;            //Translate for the projection
 bool isOrtho = true;
-float ONear = -100.0, OFar = 100.0;  //Ortho near and far
+float ONear = -100.0, OFar = 200.0;  //Ortho near and far
 float PNear = -50, PFar = 50;    //Perspective near and far
 float radius1 = 3.0;               //Radius of sphere 1
 float PRy = 0.0, PRx = 0.0, PRSpeed = 1.0;    //Rotation, Ry for projection
@@ -33,9 +33,6 @@ float difpos[3] = { 0,30,-80 };//diffuse light pos
 float dif[3] = { 1.0,0.0,0.0 };//red color difuse light
 float difM[3] = { 0.0,0.0,1.0 };//blue color dif material
 bool isLightOn = false;//is light on?
-
-//Change color
-//BlackAndWhiteView
 
 float black[][3] = {
 		{0.3, 0.3, 0.3},  // Red
@@ -233,6 +230,11 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		if (isChangeTexture) {
 			textureCount = 3;
+		}
+		}
+		else if (wParam == '4') {
+		if (isChangeTexture) {
+			textureCount = 4;
 		}
 		}
 		else if (wParam == 'A') {
@@ -1944,6 +1946,12 @@ void robot() {
 	glPopMatrix();  //---------Robot
 }
 
+void background() {
+	glPushMatrix();
+	drawSphere(150);
+	glPopMatrix();
+}
+
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -1963,19 +1971,29 @@ void display()
 	//glMaterialfv(GL_FRONT, GL_AMBIENT, ambM);     //red color ambient material
 	//glMaterialfv(GL_FRONT, GL_DIFFUSE, difM);     //red color ambient material
 	
-	GLuint texture;
+	GLuint robottexture;
 	glEnable(GL_TEXTURE_2D);
 	if (textureCount == 1) {
-		texture = loadTexture("");
+		robottexture = loadTexture("");
 	}
 	else if (textureCount == 2) {
-		texture = loadTexture("test.bmp");
+		robottexture = loadTexture("metal.bmp");
 	}
 	else if (textureCount == 3) {
-		texture = loadTexture("sunset.bmp");
+		robottexture = loadTexture("sunset.bmp");
+	}
+	else if (textureCount == 4) {
+		robottexture = loadTexture("icecream.bmp");
 	}
 	robot();
-	glDeleteTextures(1, &texture);
+	glDeleteTextures(1, &robottexture);
+	glDisable(GL_TEXTURE_2D);
+
+	GLuint bgtexture;
+	glEnable(GL_TEXTURE_2D);
+	robottexture = loadTexture("sky.bmp");
+	background();
+	glDeleteTextures(1, &bgtexture);
 	glDisable(GL_TEXTURE_2D);
 
 }

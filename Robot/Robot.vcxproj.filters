@@ -20,10 +20,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="sunset.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icecream.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="metal.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\..\..\Downloads\sky.bmp">
+    <Image Include="sky.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
