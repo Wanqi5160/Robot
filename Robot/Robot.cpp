@@ -816,6 +816,20 @@ void drawCylinder(double baseR, double topR, double height) {
 	gluCylinder(cylinder, baseR, topR, height, 30, 30);	//if one radius make it 0.0, a cone is made
 	gluDeleteQuadric(cylinder);
 }
+void drawTriangle(float x, float y, float length) {
+	glBegin(GL_TRIANGLES); 
+	glVertex3f(x, y + length, 0.0f); // Vertex 1
+	glVertex3f(x - length, y - length, 0.0f); // Vertex 2
+	glVertex3f(x + length, y - length, 0.0f); // Vertex 3
+	glEnd();
+}
+void drawRightTriangle(float x, float y, float length) {
+	glBegin(GL_TRIANGLES);
+	glVertex3f(x, y, 0.0f); // Vertex 1
+	glVertex3f(x - length, y - length, 0.0f); // Vertex 2
+	glVertex3f(x + length, y - length, 0.0f); // Vertex 3
+	glEnd();
+}
 
 //-------------------------------------JenFunction
 void sphere(GLenum style, double R, double G, double B, float radius, float sX, float sY, float sZ, float rotateDegree, float rX, float rY, float rZ) {
@@ -921,18 +935,77 @@ void drawHead(float x, float y, float z)
 	//head
 	//drawSphere(0.5);
 	drawSphereS(0.5, color[2][0], color[2][1], color[2][2]);
-	
+
 	//helmet
 	glPushMatrix();
 	glTranslatef(-0.42, -0.08, -0.25);
 	//glRotatef(-30, 0,0 , 1);
-	drawCuboidS(0.05, 0.75, 0.5, color[2][0], color[2][1], color[2][2]);
+	drawCuboidS(0.1, 0.75, 0.1, color[2][0], color[2][1], color[2][2]);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(0.42, -0.08, -0.25);
 	//glRotatef(30, 0, 0, 1);
+	drawCuboidS(-0.1, 0.75, 0.1, color[2][0], color[2][1], color[2][2]);
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(-0.2, -0.2, -0.45);
+	glScalef(1, 0.5, 1);
+	glRotatef(18, 0, 0, 1);
+	drawCuboidS(0.05, 0.75, 0.5, color[2][0], color[2][1], color[2][2]);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0.2, -0.2, -0.45);
+	glScalef(1, 0.5, 1);
+	glRotatef(-18, 0, 0, 1);
 	drawCuboidS(-0.05, 0.75, 0.5, color[2][0], color[2][1], color[2][2]);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.01, -0.1, -0.55);
+	glScalef(1, 0.5, 1);
+	glRotatef(30, 0, 0, 1);
+	drawCuboidS(0.05, 0.75, 0.5, color[2][0], color[2][1], color[2][2]);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0.01, -0.1, -0.55);
+	glScalef(1, 0.5, 1);
+	glRotatef(-30, 0, 0, 1);
+	drawCuboidS(-0.05, 0.75, 0.5, color[2][0], color[2][1], color[2][2]);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.2, -0.4, -0.44);
+	glScalef(1, 0.5, 1);
+	drawCuboidS(0.05, 0.75, 0.5, color[2][0], color[2][1], color[2][2]);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0.2, -0.4, -0.44);
+	glScalef(1, 0.5, 1);
+	drawCuboidS(-0.05, 0.75, 0.5, color[2][0], color[2][1], color[2][2]);
+	glPopMatrix();
+
+	glPushMatrix();
+	glScalef(1.7, 1, 1);
+	glTranslatef(0, 0.27, -0.35);
+	drawSphereS(0.12, color[0][0], color[0][1], color[0][2]);
+	glPopMatrix();
+
+	glPushMatrix();
+	glScalef(1.3, 1.3, 1.3);
+	glTranslatef(-0.15, 0.23, -0.2);
+	drawSphereS(0.12, color[0][0], color[0][1], color[0][2]);
+	glPopMatrix();
+
+	glPushMatrix();
+	glScalef(1.3, 1.3, 1.3);
+	glTranslatef(0.15, 0.23, -0.2);
+	drawSphereS(0.12, color[0][0], color[0][1], color[0][2]);
 	glPopMatrix();
 
 	//left ear
@@ -979,7 +1052,8 @@ void drawHead(float x, float y, float z)
 	//froorehead Helmet
 	glPushMatrix();
 	glRotatef(90, 1, 0, 0);
-	glTranslatef(0, 0.005, -0.3);  // Adjust the translation based on the forehead position
+
+	glTranslatef(0, 0, -0.3);  // Adjust the translation based on the forehead position
 	drawCylinderS(0.4, 0.46, 0.1, color[0][0], color[0][1], color[0][2]);  // Adjust the inner and outer radius as needed
 	glPopMatrix();
 	glPopMatrix();
@@ -1019,6 +1093,97 @@ void drawRobotLeg(float x, float y, float z)
 	glTranslatef(0, 0, -0.2);
 	glColor3f(color[0][0], color[0][1], color[0][2]);
 	cylinder(GL_FILL, 0.04, 0.04, 0.1, 0, 0, 0, 0);
+	glPopMatrix();
+
+	//Decoration
+	glPushMatrix();   
+	glTranslatef(0, 0.9, -0.06);
+	glRotatef(45, 0, 0, 1);
+	glRotatef(8, 1, 0, 0);
+	glColor3f(color[2][0], color[2][1], color[2][2]);
+	drawCube(0.08, 0, 0, 0);   
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0.1, 0.79, -0.12);
+	glRotatef(225, 0, 0, 1);
+	glRotatef(15, 1, 0, 0);
+	glColor3f(color[1][0], color[1][1], color[1][2]);
+	drawRightTriangle(0, 0, 0.08);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.115, 0.79, -0.12);
+	glRotatef(-225, 0, 0, 1);
+	glRotatef(15, 1, -1, 0);
+	glColor3f(color[0][0], color[0][1], color[0][2]);
+	drawRightTriangle(0, 0, 0.08);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0.035, 0.7, -0.03);
+	glScalef(0.6, 1.5, 1.1);
+	glRotatef(-7.5, 1, 0, 0);
+	glColor3f(color[1][0], color[1][1], color[1][2]);
+	drawCube(0.08, 0, 0, 0);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.06, 0.7, -0.04);
+	glScalef(0.6, 1.5, 1);
+	glRotatef(-15, 1, -1, 0);
+	glColor3f(color[0][0], color[0][1], color[0][2]);
+	drawCube(0.08, 0, 0, 0);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.06, 0.55, -0.02);
+	glScalef(0.6, 0.8, 1);
+	glRotatef(-15, 1, -1, 0);
+	glColor3f(color[0][0], color[0][1], color[0][2]);
+	drawCube(0.08, 0, 0, 0);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.025, 0.59, -0.12);
+	glRotatef(45, 0, 0, 1);
+	glRotatef(-10, 1, 0, 0);
+	glColor3f(color[1][0], color[1][1], color[1][2]);
+	drawRightTriangle(0, 0, 0.08);
+	glPopMatrix();
+	
+	glPushMatrix();
+	glTranslatef(-0.05, 0.62, -0.03);
+	glRotatef(4, 0, 0, 1);
+	glScalef(1, 1.7, 0.5);
+	glColor3f(color[2][0], color[2][1], color[2][2]);
+	drawCube(0.08, 0, 0, 0);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.02, 0.4, -0.03);
+	glRotatef(4, 0, 0, 1);
+	glScalef(1, 1, 0.5);
+	glColor3f(color[2][0], color[2][1], color[2][2]);
+	drawCube(0.08, 0, 0, 0);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.04, 0.4, 0.02);
+	glRotatef(4, 0, 0, 1);
+	glRotatef(20, 0, 1, 0);
+	glScalef(1, 1, 0.5);
+	glColor3f(color[1][0], color[1][1], color[1][2]);
+	drawCube(0.08, 0, 0, 0);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.06, 0.62, 0.02);
+	glRotatef(4, 0, 0, 1);
+	glRotatef(20, 0, 1, 0);
+	glScalef(1, 1.7, 0.5);
+	glColor3f(color[1][0], color[1][1], color[1][2]);
+	drawCube(0.08, 0, 0, 0);
 	glPopMatrix();
 
 	// Joint 1
@@ -1091,8 +1256,6 @@ void drawRobotLeg(float x, float y, float z)
 	glPopMatrix();
 	glPopMatrix();
 	glPopMatrix();
-
-	
 
 	glPushMatrix();
 	glBegin(GL_TRIANGLES);
@@ -1449,6 +1612,7 @@ void handle() {
 	drawPyramidS(0.05);
 	glPopMatrix();
 }
+
 void weapon() {
 	// handle
 	glPushMatrix();
@@ -1730,24 +1894,6 @@ void robot() {
 	body();
 	glPopMatrix();
 
-	//Robot Right Leg
-	/*
-	glPushMatrix();
-	glRotatef(r, 1, 0, 0);   //Move
-
-	glPushMatrix();
-	glRotatef(180, 0, 1, 0);
-	glScalef(100, 100, 100);
-	glTranslatef(-0.1, -0.6, 0);
-	drawRobotLeg(0.6, 0.55, 0.6);
-	drawHead(0, 0, 0);
-	glPopMatrix();
-
-	glPopMatrix();
-	*/
-
-	//drawCube(200, 1, 1, 1);
-
 	//Robot Head   
 	glPushMatrix();
 	glRotatef(bodyR, 1.0, 1.0, 0.0);
@@ -1773,6 +1919,7 @@ void robot() {
 
 	glPopMatrix();
 
+	
 	//Robot Left Leg
 	glPushMatrix();
 	glRotatef(r, 1, 0, 0);   //Move
@@ -1822,7 +1969,7 @@ void display()
 		texture = loadTexture("");
 	}
 	else if (textureCount == 2) {
-		texture = loadTexture("metal.bmp");
+		texture = loadTexture("test.bmp");
 	}
 	else if (textureCount == 3) {
 		texture = loadTexture("sunset.bmp");
@@ -1831,11 +1978,6 @@ void display()
 	glDeleteTextures(1, &texture);
 	glDisable(GL_TEXTURE_2D);
 
-	//Plane
-	glColor3f(1.0, 1.0, 1.0);
-	glPushMatrix();
-	drawRectangle(300, -105, -150, 300, 0, 300);
-	glPopMatrix();
 }
 
 
