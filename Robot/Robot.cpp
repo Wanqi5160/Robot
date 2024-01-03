@@ -502,38 +502,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 }
 //--------------------------------------------------------------------
 
-bool initPixelFormat(HDC hdc)
-{
-	PIXELFORMATDESCRIPTOR pfd;
-	ZeroMemory(&pfd, sizeof(PIXELFORMATDESCRIPTOR));
-
-	pfd.cAlphaBits = 8;
-	pfd.cColorBits = 32;
-	pfd.cDepthBits = 24;
-	pfd.cStencilBits = 0;
-
-	pfd.dwFlags = PFD_DOUBLEBUFFER | PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW;
-
-	pfd.iLayerType = PFD_MAIN_PLANE;
-	pfd.iPixelType = PFD_TYPE_RGBA;
-	pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
-	pfd.nVersion = 1;
-
-	// choose pixel format returns the number most similar pixel format available
-	int n = ChoosePixelFormat(hdc, &pfd);
-
-	// set pixel format returns whether it sucessfully set the pixel format
-	if (SetPixelFormat(hdc, n, &pfd))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-//--------------------------------------------------------------------
-
 void projection() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
@@ -949,52 +917,6 @@ void drawCubeJ(double R, double G, double B, float size, float x, float y, float
 
 	glEnd();
 	glPopMatrix();
-}
-void drawPyramid(bool isFill, float size) {
-	// Pyramid base
-	if (isFill)
-		glBegin(GL_QUADS);
-	else
-		glBegin(GL_LINE_LOOP);
-
-	// Define the normal for the base of the pyramid
-	glNormal3f(0.0f, -1.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, size);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(size, 0.0f, size);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(size, 0.0f, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glEnd();
-
-	// Pyramid 4 triangles
-	if (isFill)
-		glBegin(GL_TRIANGLE_FAN);
-	else
-		glBegin(GL_LINE_LOOP);
-
-	glTexCoord2f(0.0f, 0.5f);
-	glNormal3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(size / 2, size, size / 2);
-	glTexCoord2f(0.0f, 0.0f);
-	glNormal3f(0.0f, 0.0f, -1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(size, 0.0f, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(size, 0.0f, size);
-	glTexCoord2f(1.0f, 0.0f);
-	glNormal3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, size);
-	glTexCoord2f(0.0f, 0.0f);
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glEnd();
 }
 
 void lighting() {
@@ -1516,22 +1438,51 @@ void body() {
 	glPopMatrix();
 }
 
+void handle() {
+	// main
+	cylinder(GL_FILL, 0.6, 0.6, 0.6, 0.025, 0.035, 0.25, 90, 1.0, 0, 0.0);
+	// deco
+	// right
+	glPushMatrix();
+	glTranslatef(-0.005, -0.25, -0.03);
+	glScalef(1, 1.5, 1);
+	drawPyramidS(0.05);
+	glPopMatrix();
+	// left
+	glPushMatrix();
+	glTranslatef(-0.048, -0.25, -0.03);
+	glScalef(1, 1.5, 1);
+	drawPyramidS(0.05);
+	glPopMatrix();
+	// front
+	glPushMatrix();
+	glTranslatef(-0.0215, -0.25, 0);
+	glScalef(1, 1.5, 1);
+	drawPyramidS(0.05);
+	glPopMatrix();
+	// back
+	glPushMatrix();
+	glTranslatef(-0.0215, -0.25, -0.05);
+	glScalef(1, 1.5, 1);
+	drawPyramidS(0.05);
+	glPopMatrix();
+}
 void weapon() {
 	// handle
 	glPushMatrix();
 	glTranslatef(0, 0.25, 0);
-	cylinderJ(GL_FILL, 0.6, 0.6, 0.6, 0.025, 0.035, 0.25, 90, 1.0, 0, 0.0);;
+	handle();
 	glPopMatrix();
 
 	// base
 	glPushMatrix();
 	if (isWeaponOut) {
 		glTranslatef(0, 0, 0);
-		cylinderJ(GL_FILL, 0.5, 0.5, 0.5, 0.06, 0.06, 0.01, 90, 1.0, 0, 0.0);
+		cylinder(GL_FILL, 0.5, 0.5, 0.5, 0.06, 0.06, 0.01, 90, 1.0, 0, 0.0);
 	}
 	else {
 		glTranslatef(0, 0, 0);
-		cylinderJ(GL_FILL, 0.5, 0.5, 0.5, 0, 0, 0.01, 90, 1.0, 0, 0.0);
+		cylinder(GL_FILL, 0.5, 0.5, 0.5, 0, 0, 0.01, 90, 1.0, 0, 0.0);
 	}
 	glPopMatrix();
 
@@ -1539,7 +1490,7 @@ void weapon() {
 	glPushMatrix();
 	if (isSwordOut) {
 		glTranslatef(0, -0.012, 0);
-		cylinderJ(GL_FILL, 0.2, 0.2, 0.8, 0.025, 0.025, 0.95, 90, 1.0, 0, 0.0);
+		cylinder(GL_FILL, 0.2, 0.2, 0.8, 0.025, 0.025, 0.95, 90, 1.0, 0, 0.0);
 	}
 	else {
 	}
@@ -1549,39 +1500,47 @@ void weapon() {
 	glPushMatrix();
 	if (isWeaponOut) {
 		glTranslatef(0.08, 0.125, 0);
-		drawCubeJ(0.9, 0.9, 0.9, 1, 0.05, 0.01, 0.01);
+		drawCube(0.9, 0.9, 0.9, 1, 0.05, 0.01, 0.01);
 	}
 	else {
 	}
 	glPopMatrix();
 }
 
+
 void arm() {
 	// arm top skeleton
 	glPushMatrix();
 	glRotatef(90, 1.0, -0.2, 0.0);
 	glTranslatef(0, 0, 0.22);
-	drawCubeJ(color[2][0], color[2][1], color[2][2], 0.05, 0.5, 0.5, 4);
+	drawCube(0.7, 0.7, 0.7, 0.05, 0.5, 0.5, 4);
 	glPopMatrix();
 	// arm top
 	glPushMatrix();
 	glRotatef(90, 1.0, -0.2, 0.0);
-	cylinderJ(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.055, 0.045, 0.35, 90, 1.0, -0.2, 0.0);
+	cylinder(GLU_FILL, 1, 1, 1, 0.055, 0.045, 0.35, 90, 1.0, -0.2, 0.0);
 	glPopMatrix();
 	// joints
 	glPushMatrix();
 	glTranslatef(-0.075, -0.385, 0.0);
-	sphere(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.045, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0);
+	sphere(GLU_FILL, 1, 1, 1, 0.045, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0);
 	glPopMatrix();
 	// deltoids
+
+	//GLuint texture;
+	//glEnable(GL_TEXTURE_2D);
+	//texture = loadTexture("metal.bmp");
 	glPushMatrix();
 	glTranslatef(-0.01, -0.06, 0.0);
-	sphere(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.094, 0.7, 1.3, 0.7, 347, 0, 0, 1);
+	sphere(GLU_FILL, 1, 1, 1, 0.094, 0.7, 1.3, 0.7, 347, 0, 0, 1);
 	glPopMatrix();
+
+	//glDeleteTextures(1, &texture);
+	//glDisable(GL_TEXTURE_2D);
 	// biceps
 	glPushMatrix();
 	glTranslatef(-0.033, -0.185, 0.0);
-	sphere(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.089, 0.65, 2.1, 0.65, 349.5, 0, 0, 1);
+	sphere(GLU_FILL, 1, 1, 1, 0.089, 0.65, 2.1, 0.65, 349.5, 0, 0, 1);
 	glPopMatrix();
 }
 
@@ -1590,35 +1549,35 @@ void forearm() {
 	glPushMatrix();
 	glRotatef(90, 1.0, -0.22, 0.0);
 	glTranslatef(0.01, 0.0, 0.2);
-	drawCubeJ(color[1][0], color[1][1], color[1][2], 0.05, 0.3, 0.3, 4);
+	drawCube(0.7, 0.7, 0.7, 0.05, 0.3, 0.3, 4);
 	glPopMatrix();
 	// forearm
 	glPushMatrix();
 	glTranslatef(-0.009, -0.065, 0.0);
-	cylinderJ(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.0425, 0.024, 0.25, 90, 1.0, -0.23, 0.0);
+	cylinder(GLU_FILL, 1, 1, 1, 0.0425, 0.024, 0.25, 90, 1.0, -0.23, 0.0);
 	glPopMatrix();
 	// muscle
 	glPushMatrix();
 	glTranslatef(-0.015, -0.08, 0.0);
-	sphere(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.105, 0.42, 1, 0.42, 346, 0, 0, 1);
+	sphere(GLU_FILL, 1, 1, 1, 0.105, 0.42, 1, 0.42, 346, 0, 0, 1);
 	glPopMatrix();
 	// joints
 	glPushMatrix();
 	glTranslatef(-0.073, -0.352, 0.0);
-	sphere(GLU_FILL, color[2][0], color[2][1], color[2][2], 0.025, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0);
+	sphere(GLU_FILL, 1, 1, 1, 0.025, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0);
 	glPopMatrix();
 }
 
 void palm() {
 	glPushMatrix();
-	drawCubeJ(color[2][0], color[2][1], color[2][2], 1, 0.07, 0.08, 0.02);
+	drawCubeJ(1, 1, 1, 1, 0.07, 0.08, 0.02);
 	glPopMatrix();
 }
 
 void finger(int rotate, float thicc, float length) {
 	glPushMatrix();
 	glRotatef(rotate, 1, -1, 0);
-	drawCubeJ(color[1][0], color[1][1], color[1][2], 1, thicc, length, 0.01);
+	drawCubeJ(1, 1, 1, 1, thicc, length, 0.01);
 	glPopMatrix();
 }
 
@@ -1747,11 +1706,6 @@ void rightarm() {
 }
 
 void botharms() {
-
-	GLuint texture;
-	glEnable(GL_TEXTURE_2D);
-	texture = loadTexture("metal.bmp");
-
 	glPushMatrix();
 	glTranslatef(0, 0.3, 0);
 
@@ -1777,11 +1731,7 @@ void botharms() {
 	glPopMatrix();
 
 	glPopMatrix();
-
-	glDeleteTextures(1, &texture);
-	glDisable(GL_TEXTURE_2D);
 }
-
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -1892,6 +1842,37 @@ void display()
 }
 
 
+bool initPixelFormat(HDC hdc)
+{
+	PIXELFORMATDESCRIPTOR pfd;
+	ZeroMemory(&pfd, sizeof(PIXELFORMATDESCRIPTOR));
+
+	pfd.cAlphaBits = 8;
+	pfd.cColorBits = 32;
+	pfd.cDepthBits = 24;
+	pfd.cStencilBits = 0;
+
+	pfd.dwFlags = PFD_DOUBLEBUFFER | PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW;
+
+	pfd.iLayerType = PFD_MAIN_PLANE;
+	pfd.iPixelType = PFD_TYPE_RGBA;
+	pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+	pfd.nVersion = 1;
+
+	// choose pixel format returns the number most similar pixel format available
+	int n = ChoosePixelFormat(hdc, &pfd);
+
+	// set pixel format returns whether it sucessfully set the pixel format
+	if (SetPixelFormat(hdc, n, &pfd))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+//--------------------------------------------------------------------
 
 //--------------------------------------------------------------------
 
