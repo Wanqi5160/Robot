@@ -261,9 +261,31 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 					legAngle2 += 10;
 				}
 			}
+
+			if (isOrtho) {
+				if (PTz > ONear) {
+					PTz -= TSpeed;
+				}
+			}
+			else {
+				if (PTz > PNear) {  //(Tz > PNear + radius1)
+					PTz -= TSpeed;
+				}
+			}
 			}
 		else if (wParam == 'D') {
 			PTx -= PTSpeed;             //Move projection to left
+
+			if (isOrtho) {
+				if (PTz < OFar) {
+					PTz += TSpeed;
+				}
+			}
+			else {
+				if (PTz < PFar) {
+					PTz += TSpeed;
+				}
+			}
 		}
 		else if (wParam == 'E') {
 
@@ -362,7 +384,13 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			isBodyMovement = false;
 			}
 		else if (wParam == 'L') {
+		if (isOrtho == false) {
+			if (PRy >= 26) {
+				PRSpeed = 26;
+			}else
 				PRy += PRSpeed;
+		}
+				
 				if (isHeadMovement) { headAngle += 10; }//Rotate along y-axis anticlockwise for projection
 				}
 		else if (wParam == 'M')
@@ -395,11 +423,11 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			}
 		else if (wParam == 'O') {    //Press 'O' key
 				isOrtho = true;
-				Tz = 0;
+				//Tz = 0;
 				}
 		else if (wParam == 'P') {   //Press 'P' key
 					isOrtho = false;
-					Tz = PNear + radius1;   //So the sphere will not otu of the perspective
+					//Tz = PNear + radius1;   //So the sphere will not otu of the perspective
 					}
 		else if (wParam == 'Q') {
 			if (PRx >= 0) {
@@ -409,7 +437,15 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				PRx += PRSpeed;            //Rotate along x-axis anticlockwise for projection
 		}
 		else if (wParam == 'R') {
-			PRy -= PRSpeed;            //Rotate along y-axis clockwise for projection
+          //Rotate along y-axis clockwise for projection
+			if (isOrtho == false) {
+				if (PRy <= -26) {
+					PRSpeed = -26;
+				}
+				else
+					PRy -= PRSpeed;
+			}
+
 			if (isHeadMovement) { headAngle -= 10; }
 }
 		else if (wParam == 'S') {
@@ -492,8 +528,8 @@ void projection() {
 		glOrtho(-100.0, 100.0, -100.0, 100.0, ONear, OFar);  //Ortho, default view - 100 cube
 	}
 	else {
-		gluPerspective(90, 1.0, 1, 1000);
-		glTranslatef(0, 0, -300);
+		gluPerspective(100, 1.0, 1, 100);
+		glTranslatef(0, 0, -100);
 		//glFrustum(-100.0, 100.0, -100.0, 100, 1, 200);  //Perspective
 	}
 
