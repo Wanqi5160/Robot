@@ -239,6 +239,18 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			textureCount = 4;
 		}
 		}
+		else if (wParam == '5') {
+		if (isOrtho) {
+			if (PTz < OFar) {
+				PTz += TSpeed;
+			}
+		}
+		else {
+			if (PTz < PFar) {
+				PTz += TSpeed;
+			}
+		}
+}
 		else if (wParam == 'A') {
 			PTx += PTSpeed;             //Move projection to right
 		}
@@ -278,16 +290,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == 'D') {
 			PTx -= PTSpeed;             //Move projection to left
 
-			if (isOrtho) {
-				if (PTz < OFar) {
-					PTz += TSpeed;
-				}
-			}
-			else {
-				if (PTz < PFar) {
-					PTz += TSpeed;
-				}
-			}
+			
 		}
 		else if (wParam == 'E') {
 
