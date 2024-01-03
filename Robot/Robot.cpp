@@ -3,7 +3,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include <math.h>
-#define M_PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846////
 #pragma comment (lib, "OpenGL32.lib")
 #pragma comment (lib, "GLU32.lib")
 
