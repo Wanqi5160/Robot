@@ -18,9 +18,9 @@ bool defaultMode = false;
 
 //Camera
 float Tx = 0, Tz = 0, TSpeed = 1.0;        //translate z-axis with TSpeed
-float PTx = 0, PTy = 0, PTz = 0, PTSpeed = 0.1;            //Translate for the projection
+float PTx = 0, PTy = 0, PTz = -0.6, PTSpeed = 0.1;            //Translate for the projection
 bool isOrtho = true;
-float ONear = -100.0, OFar = 200.0;  //Ortho near and far
+float ONear = -100.0, OFar = 100.0;  //Ortho near and far
 float PNear = -50, PFar = 50;    //Perspective near and far
 float radius1 = 3.0;               //Radius of sphere 1
 float PRy = 0.0, PRx = 0.0, PRSpeed = 1.0;    //Rotation, Ry for projection
