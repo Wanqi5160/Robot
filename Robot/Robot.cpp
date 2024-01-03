@@ -389,7 +389,8 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				PRSpeed = 26;
 			}else
 				PRy += PRSpeed;
-		}
+		}else
+			PRy += PRSpeed;
 				
 				if (isHeadMovement) { headAngle += 10; }//Rotate along y-axis anticlockwise for projection
 				}
@@ -444,7 +445,8 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				}
 				else
 					PRy -= PRSpeed;
-			}
+			}else
+				PRy -= PRSpeed;
 
 			if (isHeadMovement) { headAngle -= 10; }
 }
@@ -2021,7 +2023,10 @@ void display()
 	else if (textureCount == 4) {
 		robottexture = loadTexture("icecream.bmp");
 	}
+	glPushMatrix();
+	glTranslatef(0, 0, 20);
 	robot();
+	glPopMatrix();
 	glDeleteTextures(1, &robottexture);
 	glDisable(GL_TEXTURE_2D);
 
