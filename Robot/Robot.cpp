@@ -189,42 +189,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			isLegMovement = false;
 			isBodyMovement = false;
 		}
-		// arm true
-		else if (wParam == 'H') {
-			isHandMovement = true;
-
-			defaultMode = false;
-			isHeadMovement = false;
-			isLegMovement = false;
-			isBodyMovement = false;
-		}
-		// head true
-		else if (wParam == 'Y') {
-			isHeadMovement = true;
-
-			defaultMode = false;
-			isHandMovement = false;
-			isLegMovement = false;
-			isBodyMovement = false;
-		}
-		// body true
-		else if (wParam == 'I') {
-			isBodyMovement = true;
-
-			defaultMode = false;
-			isHeadMovement = false;
-			isHandMovement = false;
-			isLegMovement = false;
-		}
-		// leg true
-		else if (wParam == 'K') {
-			isLegMovement = true;
-
-			defaultMode = false;
-			isHeadMovement = false;
-			isHandMovement = false;
-			isBodyMovement = false;
-		}
 		else if (wParam == VK_SPACE)
 		{
 			isLightOn = !isLightOn; // on/off light
@@ -232,7 +196,8 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			difpos[1] = 50.0;
 			difpos[2] = 50.0;*////////////////////////////////////////////////////
 
-		}/*
+		}
+		/*
 		else if (wParam == VK_UP) {     //Press UP arrow key
 			if (isOrtho) {
 				if (Tz > ONear) {
@@ -283,66 +248,238 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			angle += 90;
 			difpos[0] += 5; // Update x position of diffuse light
 		}
-		else if (wParam == 'O') {    //Press 'O' key
-			isOrtho = true;
-			Tz = 0;
-		}
-		else if (wParam == 'P') {   //Press 'P' key
-			isOrtho = false;
-			Tz = PNear + radius1;   //So the sphere will not otu of the perspective
-		}
 		else if (wParam == 'A') {
 			PTx += PTSpeed;             //Move projection to right
 		}
+		else if (wParam == 'B')
+		{
+			if (isLegMovement) {
+				if (legAngle >= 0) {
+					legAngle -= 10;
+				}
+			}
+			if (isHandMovement)
+			{
+				if (wholeArmAngleL > 0) {
+					wholeArmAngleL -= handSpeed;
+				}
+			}
+			}
+		else if (wParam == 'C')
+		{
+			if (isLegMovement) {
+				if (legAngle2 <= 0) {
+					legAngle2 += 10;
+				}
+			}
+			}
 		else if (wParam == 'D') {
 			PTx -= PTSpeed;             //Move projection to left
 		}
-		else if (wParam == 'W') {       //mnbbn
-			PTy -= PTSpeed;             //Move projection to up
+		else if (wParam == 'E') {
+
 		}
-		else if (wParam == 'S') {
-			PTy += PTSpeed;             //Move projection to down
+		else if (wParam == 'F')
+		{
+			if (defaultMode) {
+				difpos[2] += 5; // Update z position of diffuse light
+			}
+			if (isHandMovement)
+			{
+				if (wholeArmAngleR < 45) {
+					wholeArmAngleR += handSpeed;
+				}
+			}
 		}
+		else if (wParam == 'G') {
+			if (isHandMovement)
+			{
+				if (wholeArmAngleR > 0) {
+					wholeArmAngleR -= handSpeed;
+				}
+			}
+		}
+		else if (wParam == 'H') {
+			isHandMovement = true;
+
+			defaultMode = false;
+			isHeadMovement = false;
+			isLegMovement = false;
+			isBodyMovement = false;
+		}
+		else if (wParam == 'I') {
+			isBodyMovement = true;
+
+			defaultMode = false;
+			isHeadMovement = false;
+			isHandMovement = false;
+			isLegMovement = false;
+		}
+		else if (wParam == 'J') {
+			if (isHandMovement)
+			{
+				if (forearmAngleL < 45) {
+					forearmAngleL += handSpeed;
+				}
+			}
+			else if (isBodyMovement) {
+				if (front) {
+					r -= bodySpeed;
+					wholeArmAngleL -= bodySpeed;
+					wholeArmAngleR -= bodySpeed;
+
+					if (r <= -20) {
+						back = true;
+						front = false;
+					}
+				}
+
+				if (back) {
+					r += bodySpeed;
+					wholeArmAngleL += bodySpeed;
+					wholeArmAngleR += bodySpeed;
+
+					if (r >= 20) {
+						back = false;
+						front = true;
+					}
+				}
+
+				if (frontB) {
+					bodyR -= (bodySpeed - 1.5);
+
+					if (bodyR <= -5) {
+						backB = true;
+						frontB = false;
+					}
+				}
+
+				if (backB) {
+					bodyR += (bodySpeed - 1.5);
+
+					if (bodyR >= 5) {
+						backB = false;
+						frontB = true;
+					}
+				}
+			}
+		}
+		else if (wParam == 'K') {
+			isLegMovement = true;
+
+			defaultMode = false;
+			isHeadMovement = false;
+			isHandMovement = false;
+			isBodyMovement = false;
+			}
 		else if (wParam == 'L') {
-			PRy += PRSpeed;  
-			if (isHeadMovement) { headAngle += 10; }//Rotate along y-axis anticlockwise for projection
+				PRy += PRSpeed;
+				if (isHeadMovement) { headAngle += 10; }//Rotate along y-axis anticlockwise for projection
+				}
+		else if (wParam == 'M')
+		{
+			if (isLegMovement) {
+				if (legAngle3 >= -30)
+				{
+					legAngle3 -= 10;
+				}
+			}
+			if (isHandMovement)
+			{
+				if (wholeArmAngleL < 45) {
+					wholeArmAngleL += handSpeed;
+				}
+			}
+		}
+		else if (wParam == 'N')
+		{
+			if (defaultMode) {
+				difpos[2] -= 5; // Update z position of diffuse light
+			}
+
+			if (isHandMovement)
+			{
+				if (forearmAngleL > 0) {
+					forearmAngleL -= handSpeed;
+				}
+			}
+			}
+		else if (wParam == 'O') {    //Press 'O' key
+				isOrtho = true;
+				Tz = 0;
+				}
+		else if (wParam == 'P') {   //Press 'P' key
+					isOrtho = false;
+					Tz = PNear + radius1;   //So the sphere will not otu of the perspective
+					}
+		else if (wParam == 'Q') {
+			if (PRx >= 0) {
+				PRx = 0;
+			}
+			else
+				PRx += PRSpeed;            //Rotate along x-axis anticlockwise for projection
 		}
 		else if (wParam == 'R') {
 			PRy -= PRSpeed;            //Rotate along y-axis clockwise for projection
 			if (isHeadMovement) { headAngle -= 10; }
 }
+		else if (wParam == 'S') {
+			PTy += PTSpeed;             //Move projection to down
+		}
+		else if (wParam == 'T') {
+			if (isHandMovement)
+			{
+				if (forearmAngleR < 45) {
+					forearmAngleR += handSpeed;
+				}
+			}
+		}
 		else if (wParam == 'U') {
 			if (PRx <= -90) {
 				PRx = -90;
 			}else	
 				PRx -= PRSpeed;            //Rotate along x-axis clockwise for projection
 		}
-		else if (wParam == 'Q') {
-			if (PRx >= 0) {
-				PRx = 0;
-			} else
-				PRx += PRSpeed;            //Rotate along x-axis anticlockwise for projection
-		}
-		else if (wParam == 'N')
-		{
-			difpos[2] -= 5; // Update z position of diffuse light
-
+		else if (wParam == 'V') {
 			if (isHandMovement)
 			{
 				if (forearmAngleR > 0) {
 					forearmAngleR -= handSpeed;
 				}
 			}
+			else if (isLegMovement) {
+				if (legAngle3 <= 0) {
+					legAngle3 += 10;
+				}
+			}
 		}
-		else if (wParam == 'F')
+		else if (wParam == 'W') {       //mnbbn
+			PTy -= PTSpeed;             //Move projection to up
+		}
+		else if (wParam == 'X')
 		{
-			difpos[2] += 5; // Update z position of diffuse light
+			if (isLegMovement) {
+				if (legAngle <= 70) {
+					legAngle += 10;
+				}
+			}
 		}
-		else if (wParam == 'H') {
-		isHandMovement = true; // toggle hand mode
-		// is other movements = false
-		}
+		else if (wParam == 'Y') {
+			isHeadMovement = true;
 
+			defaultMode = false;
+			isHandMovement = false;
+			isLegMovement = false;
+			isBodyMovement = false;
+		}
+		else if (wParam == 'Z') {
+			if (isLegMovement)
+			{
+				if (legAngle2 >= -70) {
+					legAngle2 -= 10;
+				}
+			}
+		}
 		else if (wParam == '1') {
 		if (isHandMovement) {
 			isWeaponOut = true; // weapon on
@@ -359,138 +496,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		if (isHandMovement) {
 			isWeaponOut = false;
 			isSwordOut = false;
-		}
-		}
-		else if (wParam == 'T') {
-		if (isHandMovement)
-		{
-			if (forearmAngleL < 45) {
-				forearmAngleL += handSpeed;
-			}
-		}
-		}
-		else if (wParam == 'G') {
-		if (isHandMovement)
-		{
-			if (wholeArmAngleL < 45) {
-				wholeArmAngleL += handSpeed;
-			}
-		}
-		}
-		else if (wParam == 'V') {
-		if (isHandMovement)
-		{
-			if (forearmAngleL > 0) {
-				forearmAngleL -= handSpeed;
-			}
-		}
-		else if(isLegMovement){
-			if (legAngle3 <= 0) {
-				legAngle3 += 10;
-			}
-		}
-		}
-		else if (wParam == 'F') {
-		if (isHandMovement)
-		{
-			if (wholeArmAngleL > 0) {
-				wholeArmAngleL -= handSpeed;
-			}
-		}
-		}
-		else if (wParam == 'Z') {
-		if (isHandMovement)
-		{
-			if (forearmAngleR < 45) {
-				forearmAngleR += handSpeed;
-			}
-		}else if (legAngle2 >= -70 && isLegMovement == true) {
-			legAngle2 -= 10;
-		}
-		}
-		else if (wParam == 'J') {
-		if (isHandMovement)
-		{
-			if (forearmAngleR < 45) {
-				forearmAngleR += handSpeed;
-			}
-		}
-		else if (isBodyMovement) {////////////////////////////
-			if (front) {
-				r -= bodySpeed;
-				wholeArmAngleL -= bodySpeed;
-				wholeArmAngleR -= bodySpeed;
-
-				if (r <= -20) {
-					back = true;
-					front = false;
-				}
-			}
-
-			if (back) {
-				r += bodySpeed;
-				wholeArmAngleL += bodySpeed;
-				wholeArmAngleR += bodySpeed;
-
-				if (r >= 20) {
-					back = false;
-					front = true;
-				}
-			}
-
-			if (frontB) {
-				bodyR -= (bodySpeed - 1.5);
-
-				if (bodyR <= -5) {
-					backB = true;
-					frontB = false;
-				}
-			}
-
-			if (backB) {
-				bodyR += (bodySpeed-1.5);
-
-				if (bodyR >= 5) {
-					backB = false;
-					frontB = true;
-				}
-			}
-		}
-		}
-		else if (wParam == 'X')
-		{
-		if (legAngle <= 70 && isLegMovement == true) {
-			legAngle += 10;
-		}
-		}
-		else if (wParam == 'B')
-		{
-		if (legAngle >= 0 && isLegMovement == true) {
-			legAngle -= 10;
-		}else if (isHandMovement)
-		{
-			if (wholeArmAngleR > 0) {
-				wholeArmAngleR -= handSpeed;
-			}
-		}
-		}
-		else if (wParam == 'C')
-		{
-		if (legAngle2 <= 0 && isLegMovement == true) {
-			legAngle2 += 10;
-		}
-		}
-		
-		else if (wParam == 'M')
-		{
-		if (legAngle3 >= -30 && isLegMovement == true)
-		{
-			legAngle3 -= 10;
-		}else if (isHandMovement)
-		{
-			if (wholeArmAngleR < 45) {
-				wholeArmAngleR += handSpeed;
-			}
 		}
 		}
 		break;
